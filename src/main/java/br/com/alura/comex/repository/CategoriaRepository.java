@@ -1,8 +1,7 @@
 package br.com.alura.comex.repository;
 
-import br.com.alura.comex.entity.Categoria;
 import br.com.alura.comex.dto.RelatorioPedido;
-
+import br.com.alura.comex.entity.Categoria;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

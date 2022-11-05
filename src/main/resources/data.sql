@@ -1,3 +1,7 @@
+
+INSERT INTO USUARIO(nome, senha) VALUES('user', '123');
+INSERT INTO USUARIO(nome, senha) VALUES('user2', '$2a$10$p5xWFuR1sw1/uF4WqFMFvu5uBtlmgQaWLB/kXNixBv3qdsJyzjL1W');
+
 INSERT INTO CATEGORIAS(nome, status) VALUES('Categoria A', 'ATIVA');
 INSERT INTO CATEGORIAS(nome, status) VALUES('Categoria F', 'ATIVA');
 INSERT INTO CATEGORIAS(nome, status) VALUES('Categoria J', 'ATIVA');

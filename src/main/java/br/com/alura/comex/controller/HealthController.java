@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HealthController {
     // do this - keys get ordered alfabetically
-    @RequestMapping("/health")
+    @GetMapping("/health")
     @ResponseBody
     public Map<String, Object> index() {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -43,7 +44,7 @@ public class HealthController {
             return "ok";
         }
     }
-    @RequestMapping("/health_dto")
+    @GetMapping("/health_dto")
     @ResponseBody
     public Dto indexDto() {
         Dto dto = new Dto();
