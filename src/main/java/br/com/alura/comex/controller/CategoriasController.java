@@ -5,6 +5,8 @@ import javax.validation.constraints.Size;
 
 import br.com.alura.comex.entity.Categoria;
 import br.com.alura.comex.dto.RelatorioPedido;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,8 +29,15 @@ public class CategoriasController extends CrudController<CategoriaRepository> {
     }
 
     @GetMapping("/pedidos")
+    @Cacheable(value = "relatorioPedidos")
     public List<RelatorioPedido> report() {
         return repository.getRelatorioPedido();
+    }
+
+    @GetMapping("/limpaCache")
+    @CacheEvict(value = "relatorioPedidos", allEntries = true)
+    public String limpaCache() {
+        return "Cache limpa!";
     }
 
     @PostMapping
