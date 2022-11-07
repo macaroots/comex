@@ -37,17 +37,15 @@ public abstract class CrudController<R extends CrudRepository> {
         return entity;
     }
 
-    @GetMapping
     public Iterable<?> list() {
+        System.out.println("SUPER LIST");
         Iterable<?> entities = repository.findAll();
         return getDtos(entities);
     }
 
-    @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         try {
-            Object entity = repository.findById(id);
-            entity.toString();
+            Object entity = repository.findById(id).get();
             return ResponseEntity.ok(getDetailedDto(entity));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -75,7 +73,7 @@ public abstract class CrudController<R extends CrudRepository> {
     @Transactional
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid Dto form) {
         try {
-            Object entity = repository.findById(id);
+            Object entity = repository.findById(id).get();
             doUpdate(entity, form);
             return ResponseEntity.ok(getDetailedDto(entity));
         } catch (EntityNotFoundException e) {
@@ -83,7 +81,6 @@ public abstract class CrudController<R extends CrudRepository> {
         }
     }
 
-    @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {

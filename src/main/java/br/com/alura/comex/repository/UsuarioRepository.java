@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Usuario findByNome(String username);
+    Usuario findByEmail(String email);
 }

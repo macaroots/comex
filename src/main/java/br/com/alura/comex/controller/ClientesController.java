@@ -1,15 +1,11 @@
 package br.com.alura.comex.controller;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import br.com.alura.comex.entity.Cliente;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.alura.comex.dto.Dto;
@@ -21,6 +17,20 @@ public class ClientesController extends CrudController<ClienteRepository> {
 
     public ClientesController(ClienteRepository repository) {
         super(repository);
+    }
+
+    @GetMapping
+    public Iterable<?> list() {
+        return super.list();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        return super.get(id);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return super.delete(id);
     }
 
     @PostMapping

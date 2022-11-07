@@ -1,32 +1,62 @@
 package br.com.alura.comex.controller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.validation.Valid;
-
+import br.com.alura.comex.dto.Dto;
 import br.com.alura.comex.entity.*;
 import br.com.alura.comex.repository.ItemPedidoRepository;
+import br.com.alura.comex.repository.PedidoRepository;
+import br.com.alura.comex.security.AuthTokenFilter;
+import br.com.alura.comex.security.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.alura.comex.dto.Dto;
-import br.com.alura.comex.repository.PedidoRepository;
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidosController extends CrudController<PedidoRepository> {
 
     private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private TokenService tokenService;
     public PedidosController(PedidoRepository repository, ItemPedidoRepository itemPedidoRepository) {
         super(repository);
         this.itemPedidoRepository = itemPedidoRepository;
+    }
+
+    @GetMapping
+    public ResponseEntity<?> list(HttpServletRequest request) {
+        Long id = tokenService.getIdUsuario(AuthTokenFilter.getToken(request));
+        Iterable<?> entities = repository.findByClienteId(id);
+        return ResponseEntity.ok(getDtos(entities));
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id, HttpServletRequest request) {
+        try {
+            Long idCliente = tokenService.getIdUsuario(AuthTokenFilter.getToken(request));
+            Object entity = repository.findByIdAndClienteId(id, idCliente).iterator().next();
+            return ResponseEntity.ok(getDetailedDto(entity));
+        } catch (EntityNotFoundException | NoSuchElementException e) {
+            /*
+            No caso de ser de outro cliente, poderia devolver FORBIDDEN,
+            mas NOT FOUND se encaixa bem também e não dá a dica que o id existe.
+             */
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return super.delete(id);
     }
 
     @PostMapping

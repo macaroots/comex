@@ -17,7 +17,7 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             System.out.println("AUTH" + username);
-            Usuario usuario = repository.findByNome(username);
+            Usuario usuario = repository.findByEmail(username);
             return usuario;
         } catch (Exception e) {
             System.out.println("AUTH ERRO" + e);

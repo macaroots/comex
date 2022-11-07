@@ -15,8 +15,10 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String nome;
+    String email;
     String senha;
+    @OneToOne
+    Cliente cliente;
     @ManyToMany(fetch = FetchType.EAGER)
     List<Perfil> perfis = new ArrayList<Perfil>();
 
@@ -28,12 +30,12 @@ public class Usuario implements UserDetails {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getEmail() {
+        return email;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -46,6 +48,14 @@ public class Usuario implements UserDetails {
     public void setPassword(String senha) {
         this.senha = new BCryptPasswordEncoder().encode(senha);
         //this.senha = senha;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public List<Perfil> getPerfis() {
@@ -68,7 +78,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nome;
+        return email;
     }
 
     @Override

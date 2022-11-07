@@ -46,7 +46,7 @@ public class CategoriasController extends CrudController<CategoriaRepository> {
         return super.insert(form, "/api/categorias/{id}", uriBuilder);
     }
 
-    @GetMapping("/p")
+    @GetMapping
     public Iterable<?> list(Optional<Integer> page, Optional<Integer> size) {
         Pageable pageable = PageRequest.of(page.orElse(0), size.orElse(5), Sort.by(Sort.DEFAULT_DIRECTION, "nome"));
         Iterable<?> entities = repository.findAll(pageable);
@@ -54,6 +54,14 @@ public class CategoriasController extends CrudController<CategoriaRepository> {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        return super.get(id);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return super.delete(id);
+    }
 
     public void doUpdate (Object object, Dto dto) {
         Categoria entity = (Categoria) object;

@@ -21,6 +21,20 @@ public class ProdutosController extends CrudController<ProdutoRepository> {
         super(repository);
     }
 
+    @GetMapping
+    public Iterable<?> list() {
+        return super.list();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Long id) {
+        return super.get(id);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return super.delete(id);
+    }
+
     @PostMapping
     public ResponseEntity<?> insert(@RequestBody @Valid RequestDto form, UriComponentsBuilder uriBuilder) {
         return super.insert(form, "/api/produtos/{id}", uriBuilder);
